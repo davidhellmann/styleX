@@ -1,0 +1,54 @@
+/*
+ * Paper theme
+ *
+ * Paper is also the default theme when the root has no data-theme attribute.
+ * This file implements every backing slot from theme-contract.css explicitly,
+ * so the theme remains deterministic when nested inside another theme.
+ *
+ * Dark mode can later be added slot by slot by replacing a value with:
+ *   light-dark(<current-light-value>, <future-dark-value>)
+ */
+:where(:root:not([data-theme]), [data-theme="paper"]) {
+  /* Canvas: the page-level background and its default content colors. */
+  --color-canvas-fill-default: var(--color-neutral-050);
+  --color-canvas-fill-muted: var(--color-neutral-100);
+  --color-canvas-text-default: var(--color-neutral-950);
+  --color-canvas-text-muted: var(--color-neutral-500);
+  --color-canvas-link-default: var(--color-orange-600);
+  --color-canvas-link-hover: var(--color-neutral-950);
+  --color-canvas-link-active: var(--color-orange-500);
+  --color-canvas-link-visited: oklch(0.5 0.16 320);
+  --color-canvas-border-default: var(--color-neutral-300);
+  --color-canvas-focus-default: var(--color-orange-600);
+
+  /* Surface: cards, panels, and other content placed on the canvas. */
+  --color-surface-fill-default: var(--color-neutral-000);
+  --color-surface-fill-muted: var(--color-neutral-100);
+  --color-surface-text-default: var(--color-neutral-950);
+  --color-surface-text-muted: var(--color-neutral-500);
+  --color-surface-link-default: var(--color-orange-600);
+  --color-surface-link-hover: var(--color-neutral-950);
+  --color-surface-link-active: var(--color-orange-500);
+  --color-surface-link-visited: oklch(0.5 0.16 320);
+  --color-surface-border-default: var(--color-neutral-300);
+  --color-surface-focus-default: var(--color-orange-600);
+
+  /* Floating: detached UI that needs stronger contrast than its surroundings. */
+  --color-floating-fill-default: var(--color-neutral-950);
+  --color-floating-fill-muted: var(--color-neutral-800);
+  --color-floating-text-default: var(--color-neutral-050);
+  --color-floating-text-muted: var(--color-neutral-300);
+  --color-floating-link-default: var(--color-orange-300);
+  --color-floating-link-hover: var(--color-neutral-000);
+  --color-floating-link-active: var(--color-orange-500);
+  --color-floating-link-visited: oklch(0.77 0.13 320);
+  --color-floating-border-default: var(--color-neutral-700);
+  --color-floating-focus-default: var(--color-orange-300);
+
+  /* Semantic colors do not change with the local color context. */
+  --color-danger-default: var(--color-red-600);
+  --color-success-default: var(--color-green-600);
+  --color-selection-fill-default: var(--color-yellow-300);
+  --color-selection-text-default: var(--color-neutral-950);
+  --color-backdrop-fill-default: color-mix(in oklch, var(--color-neutral-950) 64%, transparent);
+}

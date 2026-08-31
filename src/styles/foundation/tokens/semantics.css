@@ -1,0 +1,64 @@
+/*
+ * Theme-independent semantic tokens
+ *
+ * Semantics assign primitive values to stable application roles. They may be
+ * consumed by StyleX recipes and components. Theme-dependent color roles stay
+ * in themes/theme-contract.css and the individual theme files.
+ */
+:root {
+  /* Typography roles */
+  --font-family-body: var(--font-stack-serif);
+  --font-family-display: var(--font-stack-serif);
+  --font-family-ui: var(--font-stack-sans);
+  --font-family-code: var(--font-stack-mono);
+  --font-family-accent: var(--font-stack-accent);
+
+  --font-weight-regular: var(--font-weight-400);
+  --font-weight-medium: var(--font-weight-500);
+  --font-weight-semibold: var(--font-weight-600);
+  --font-weight-bold: var(--font-weight-700);
+
+  --line-height-tight: var(--line-height-110);
+  --line-height-heading: var(--line-height-120);
+  --line-height-body: var(--line-height-160);
+  --line-height-ui: var(--line-height-100);
+
+  /* Responsive page-level spacing roles */
+  --space-gutter: clamp(1rem, 3vw, 3rem);
+  --space-section: clamp(3rem, 8vw, 7rem);
+  --space-safe-bottom: calc(env(safe-area-inset-bottom, 0rem) + var(--space-xl));
+
+  /* Geometry and layout roles */
+  --border-width-default: var(--border-width-1);
+  --border-width-focus: var(--border-width-2);
+  --content-width-default: 90rem;
+  --content-width-reading: 42rem;
+
+  /* Visual treatment roles remain independent from color context. */
+  --shadow-raised-default: var(--shadow-md);
+  --shadow-overlay-default: var(--shadow-lg);
+  --shadow-sunken-default: var(--shadow-inset-sm);
+
+  /* Interaction and animation roles */
+  --transition-interactive: var(--duration-fast) var(--easing-standard);
+  --animation-spin: foundation-spin 800ms linear infinite;
+  --animation-enter: foundation-enter var(--duration-slow) var(--easing-enter) both;
+}
+
+@keyframes foundation-spin {
+  to {
+    transform: rotate(1turn);
+  }
+}
+
+@keyframes foundation-enter {
+  from {
+    opacity: 0;
+    transform: translateY(0.5rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

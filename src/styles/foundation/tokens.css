@@ -1,0 +1,12 @@
+/*
+ * Foundation token entry point
+ *
+ * Import order is intentional:
+ * 1. primitives.css provides reusable scales and raw values.
+ * 2. semantics.css assigns those values to application-facing roles.
+ *
+ * Theme-dependent color semantics live separately in themes/.
+ */
+
+@import "./tokens/primitives.css";
+@import "./tokens/semantics.css";

@@ -1,0 +1,67 @@
+html {
+  min-width: 20rem;
+  min-height: 100%;
+  overflow-x: clip;
+  scrollbar-gutter: stable;
+}
+
+body {
+  background: var(--color-fill-default);
+  color: var(--color-text-default);
+  font-family: var(--font-family-body);
+  font-size: var(--font-size-md);
+  line-height: var(--line-height-body);
+  overflow-x: clip;
+  overflow-wrap: break-word;
+}
+
+a {
+  color: var(--color-link-default);
+  text-decoration-color: color-mix(in oklch, currentColor 48%, transparent);
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.12em;
+  white-space: nowrap;
+}
+
+a:visited {
+  color: var(--color-link-visited);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  a:hover {
+    color: var(--color-link-hover);
+  }
+}
+
+a:active {
+  color: var(--color-link-active);
+}
+
+:focus-visible {
+  outline: var(--border-width-focus) dashed var(--color-focus-default);
+  outline-offset: 0.2rem;
+}
+
+button:not(:disabled) {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+::selection {
+  background: var(--color-selection-fill-default);
+  color: var(--color-selection-text-default);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 1ms !important;
+  }
+}

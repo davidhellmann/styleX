@@ -1,0 +1,130 @@
+/*
+ * Primitive foundation tokens
+ *
+ * Primitives describe available values and scales without assigning them to a
+ * component or application role. Components should normally consume semantic
+ * tokens or theme context tokens instead of referencing these values directly.
+ */
+:root {
+  /* Neutral palette */
+  --color-neutral-000: oklch(1 0 0);
+  --color-neutral-050: oklch(0.985 0.004 85);
+  --color-neutral-100: oklch(0.965 0.006 85);
+  --color-neutral-200: oklch(0.91 0.009 78);
+  --color-neutral-300: oklch(0.84 0.012 74);
+  --color-neutral-500: oklch(0.54 0.018 66);
+  --color-neutral-700: oklch(0.36 0.016 62);
+  --color-neutral-800: oklch(0.27 0.014 58);
+  --color-neutral-900: oklch(0.205 0.012 55);
+  --color-neutral-950: oklch(0.145 0.009 52);
+
+  /* Ocean palette */
+  --color-ocean-050: oklch(0.97 0.02 228);
+  --color-ocean-100: oklch(0.93 0.04 230);
+  --color-ocean-200: oklch(0.86 0.07 232);
+  --color-ocean-400: oklch(0.67 0.14 238);
+  --color-ocean-500: oklch(0.57 0.16 242);
+  --color-ocean-600: oklch(0.48 0.15 246);
+  --color-ocean-700: oklch(0.39 0.13 250);
+  --color-ocean-800: oklch(0.29 0.095 252);
+  --color-ocean-900: oklch(0.22 0.07 254);
+  --color-ocean-950: oklch(0.16 0.045 256);
+
+  /* Accent and feedback palette */
+  --color-orange-300: oklch(0.79 0.16 60);
+  --color-orange-500: oklch(0.67 0.22 42);
+  --color-orange-600: oklch(0.57 0.22 35);
+  --color-yellow-300: oklch(0.91 0.18 98);
+  --color-red-400: oklch(0.66 0.21 24);
+  --color-red-600: oklch(0.52 0.19 25);
+  --color-green-400: oklch(0.68 0.17 146);
+  --color-green-600: oklch(0.5 0.15 146);
+
+  /* CSS color keywords exposed as reusable values */
+  --color-transparent: transparent;
+  --color-current: currentColor;
+
+  /* Raw font stacks; semantic roles are assigned in semantics.css. */
+  --font-stack-serif: "Bitter Variable", ui-serif, Georgia, serif;
+  --font-stack-sans: "Poppins", ui-sans-serif, system-ui, sans-serif;
+  --font-stack-mono: "JetBrains Mono Variable", ui-monospace, monospace;
+  --font-stack-accent: "Geomanist", "Poppins", ui-sans-serif, system-ui, sans-serif;
+
+  /* Font weight scale */
+  --font-weight-400: 400;
+  --font-weight-500: 500;
+  --font-weight-600: 600;
+  --font-weight-700: 700;
+
+  /* Unitless line-height scale */
+  --line-height-100: 1;
+  --line-height-110: 1.1;
+  --line-height-120: 1.2;
+  --line-height-160: 1.6;
+
+  /* Font size scale */
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-md: 1rem;
+  --font-size-lg: clamp(1.125rem, 1rem + 0.35vi, 1.35rem);
+  --font-size-xl: clamp(1.45rem, 1.18rem + 0.8vi, 2rem);
+  --font-size-2xl: clamp(2rem, 1.35rem + 2vi, 3.5rem);
+  --font-size-3xl: clamp(3rem, 1.5rem + 5vi, 7rem);
+
+  /* Letter-spacing scale */
+  --letter-spacing-tight: -0.035em;
+  --letter-spacing-ui: 0.02em;
+
+  /* Spacing scale based on 4 px steps */
+  --space-3xs: 0.125rem;
+  --space-2xs: 0.25rem;
+  --space-xs: 0.5rem;
+  --space-sm: 0.75rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 3rem;
+  --space-3xl: 4.5rem;
+  --space-4xl: 7rem;
+
+  /* Border-width scale */
+  --border-width-1: 1px;
+  --border-width-2: 2px;
+
+  /* Radius scale */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.875rem;
+  --radius-round: 999px;
+
+  /* Raw elevation values */
+  --shadow-sm: 0 1px 2px oklch(0.12 0.02 250 / 0.12);
+  --shadow-md: 0 0.75rem 2rem oklch(0.12 0.02 250 / 0.14);
+  --shadow-lg: 0 1.5rem 4rem oklch(0.12 0.02 250 / 0.18);
+  --shadow-inset-sm: inset 0 1px 3px oklch(0.12 0.02 250 / 0.16);
+
+  /* Duration and easing scales */
+  --duration-instant: 80ms;
+  --duration-fast: 140ms;
+  --duration-default: 220ms;
+  --duration-slow: 420ms;
+  --easing-standard: cubic-bezier(0.2, 0, 0, 1);
+  --easing-enter: cubic-bezier(0.16, 1, 0.3, 1);
+  --easing-exit: cubic-bezier(0.7, 0, 0.84, 0);
+
+  /*
+   * Layout metadata documents shared values. Media queries still require
+   * literal conditions because custom properties cannot be used there.
+   */
+  --breakpoint-sm: 30rem;
+  --breakpoint-md: 48rem;
+  --breakpoint-lg: 64rem;
+  --breakpoint-xl: 80rem;
+  --breakpoint-2xl: 96rem;
+
+  /* Aspect-ratio scale */
+  --aspect-square: 1 / 1;
+  --aspect-portrait: 3 / 4;
+  --aspect-landscape: 4 / 3;
+  --aspect-wide: 16 / 9;
+}

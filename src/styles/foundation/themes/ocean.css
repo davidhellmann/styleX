@@ -1,0 +1,54 @@
+/*
+ * Ocean theme
+ *
+ * Ocean implements every backing slot from theme-contract.css explicitly.
+ * Nothing falls back to Paper, so nested theme boundaries cannot accidentally
+ * combine colors from both themes.
+ *
+ * Dark mode can later be added slot by slot by replacing a value with:
+ *   light-dark(<current-light-value>, <future-dark-value>)
+ */
+:where([data-theme="ocean"]) {
+  /* Canvas: a dark brand field with high-contrast content. */
+  --color-canvas-fill-default: var(--color-ocean-900);
+  --color-canvas-fill-muted: var(--color-ocean-800);
+  --color-canvas-text-default: var(--color-ocean-050);
+  --color-canvas-text-muted: var(--color-ocean-200);
+  --color-canvas-link-default: var(--color-yellow-300);
+  --color-canvas-link-hover: var(--color-neutral-000);
+  --color-canvas-link-active: var(--color-orange-300);
+  --color-canvas-link-visited: oklch(0.82 0.12 320);
+  --color-canvas-border-default: var(--color-ocean-700);
+  --color-canvas-focus-default: var(--color-yellow-300);
+
+  /* Surface: a light content area that contrasts with the dark canvas. */
+  --color-surface-fill-default: var(--color-ocean-050);
+  --color-surface-fill-muted: var(--color-ocean-100);
+  --color-surface-text-default: var(--color-ocean-950);
+  --color-surface-text-muted: var(--color-ocean-700);
+  --color-surface-link-default: var(--color-ocean-700);
+  --color-surface-link-hover: var(--color-ocean-950);
+  --color-surface-link-active: var(--color-orange-600);
+  --color-surface-link-visited: oklch(0.46 0.15 320);
+  --color-surface-border-default: var(--color-ocean-200);
+  --color-surface-focus-default: var(--color-ocean-600);
+
+  /* Floating: detached UI stays light and readable over the Ocean canvas. */
+  --color-floating-fill-default: var(--color-neutral-000);
+  --color-floating-fill-muted: var(--color-ocean-050);
+  --color-floating-text-default: var(--color-ocean-950);
+  --color-floating-text-muted: var(--color-ocean-700);
+  --color-floating-link-default: var(--color-ocean-700);
+  --color-floating-link-hover: var(--color-ocean-950);
+  --color-floating-link-active: var(--color-orange-600);
+  --color-floating-link-visited: oklch(0.46 0.15 320);
+  --color-floating-border-default: var(--color-ocean-200);
+  --color-floating-focus-default: var(--color-ocean-600);
+
+  /* Semantic colors do not change with the local color context. */
+  --color-danger-default: var(--color-red-600);
+  --color-success-default: var(--color-green-600);
+  --color-selection-fill-default: var(--color-yellow-300);
+  --color-selection-text-default: var(--color-neutral-950);
+  --color-backdrop-fill-default: color-mix(in oklch, var(--color-neutral-950) 64%, transparent);
+}

@@ -1,0 +1,14 @@
+/*
+ * Theme entry point
+ *
+ * Import order is part of the contract:
+ * 1. theme-contract.css defines the public variables and prevents values from
+ *    leaking across nested theme boundaries.
+ * 2. Every theme file implements the complete contract with its own values.
+ *
+ * Add new themes as their own file and import them after theme-contract.css.
+ */
+
+@import "./themes/theme-contract.css";
+@import "./themes/paper.css";
+@import "./themes/ocean.css";

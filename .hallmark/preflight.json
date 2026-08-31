@@ -1,0 +1,9 @@
+{
+  "date": "2026-08-27",
+  "source": "/Users/davidhellmann/Development/Sideprojects/com.davidhellmann.sveltekit/src/lib/styles",
+  "fontStack": ["Poppins", "Bitter Variable", "JetBrains Mono Variable", "Geomanist"],
+  "palette": "OKLCH custom properties",
+  "motion": "motion-cut with reduced-motion support",
+  "spacing": "4px base with fluid 8px–48px gutters",
+  "framework": "React 19 + Vite 8 + StyleX 0.19"
+}

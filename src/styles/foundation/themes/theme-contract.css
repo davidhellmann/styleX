@@ -1,0 +1,134 @@
+/*
+ * Public color contract
+ *
+ * Theme-owned backing slots:
+ *   --color-{context}-{role}-{modifier}
+ *
+ * Component-facing contextual slots:
+ *   --color-{role}-{modifier}
+ *
+ * Components consume only the contextual slots. A color context maps those
+ * slots to the active theme's canvas, surface, or floating backing slots.
+ */
+
+/*
+ * The foundation is light-only for now. Later, color-scheme selectors can be
+ * added here and each theme value can become light-dark(light, dark) without
+ * changing the theme or context structure.
+ *
+ * Future selector shape:
+ *   [data-color-scheme="light"]  { color-scheme: light; }
+ *   [data-color-scheme="dark"]   { color-scheme: dark; }
+ *   [data-color-scheme="system"] { color-scheme: light dark; }
+ */
+:root {
+  color-scheme: light;
+}
+
+/*
+ * A theme boundary must never inherit an omitted backing slot from its parent.
+ * Resetting every slot makes an incomplete or misspelled theme visibly invalid
+ * instead of silently producing a mixture of two themes.
+ *
+ * The concrete theme selectors are loaded after this file and replace every
+ * reset value. Keep this list in sync with every theme file.
+ */
+:where([data-theme]) {
+  /* Canvas context */
+  --color-canvas-fill-default: initial;
+  --color-canvas-fill-muted: initial;
+  --color-canvas-text-default: initial;
+  --color-canvas-text-muted: initial;
+  --color-canvas-link-default: initial;
+  --color-canvas-link-hover: initial;
+  --color-canvas-link-active: initial;
+  --color-canvas-link-visited: initial;
+  --color-canvas-border-default: initial;
+  --color-canvas-focus-default: initial;
+
+  /* Surface context */
+  --color-surface-fill-default: initial;
+  --color-surface-fill-muted: initial;
+  --color-surface-text-default: initial;
+  --color-surface-text-muted: initial;
+  --color-surface-link-default: initial;
+  --color-surface-link-hover: initial;
+  --color-surface-link-active: initial;
+  --color-surface-link-visited: initial;
+  --color-surface-border-default: initial;
+  --color-surface-focus-default: initial;
+
+  /* Floating context */
+  --color-floating-fill-default: initial;
+  --color-floating-fill-muted: initial;
+  --color-floating-text-default: initial;
+  --color-floating-text-muted: initial;
+  --color-floating-link-default: initial;
+  --color-floating-link-hover: initial;
+  --color-floating-link-active: initial;
+  --color-floating-link-visited: initial;
+  --color-floating-border-default: initial;
+  --color-floating-focus-default: initial;
+
+  /* Theme-wide semantic colors */
+  --color-danger-default: initial;
+  --color-success-default: initial;
+  --color-selection-fill-default: initial;
+  --color-selection-text-default: initial;
+  --color-backdrop-fill-default: initial;
+}
+
+/*
+ * The document root and every new theme boundary start in canvas context.
+ * Including [data-theme] here is essential for nesting: it replaces any
+ * contextual aliases inherited from the outer theme.
+ *
+ * An explicit data-color-context on the same element overrides this default
+ * through the more specific surface or floating selectors below.
+ */
+:where(:root, [data-theme], [data-color-context="canvas"]) {
+  --color-fill-default: var(--color-canvas-fill-default);
+  --color-fill-muted: var(--color-canvas-fill-muted);
+  --color-text-default: var(--color-canvas-text-default);
+  --color-text-muted: var(--color-canvas-text-muted);
+  --color-link-default: var(--color-canvas-link-default);
+  --color-link-hover: var(--color-canvas-link-hover);
+  --color-link-active: var(--color-canvas-link-active);
+  --color-link-visited: var(--color-canvas-link-visited);
+  --color-border-default: var(--color-canvas-border-default);
+  --color-focus-default: var(--color-canvas-focus-default);
+}
+
+/* Surfaces are embedded areas such as cards, panels, and sections. */
+[data-color-context="surface"] {
+  --color-fill-default: var(--color-surface-fill-default);
+  --color-fill-muted: var(--color-surface-fill-muted);
+  --color-text-default: var(--color-surface-text-default);
+  --color-text-muted: var(--color-surface-text-muted);
+  --color-link-default: var(--color-surface-link-default);
+  --color-link-hover: var(--color-surface-link-hover);
+  --color-link-active: var(--color-surface-link-active);
+  --color-link-visited: var(--color-surface-link-visited);
+  --color-border-default: var(--color-surface-border-default);
+  --color-focus-default: var(--color-surface-focus-default);
+}
+
+/* Floating areas are detached UI such as menus, popovers, and tooltips. */
+[data-color-context="floating"] {
+  --color-fill-default: var(--color-floating-fill-default);
+  --color-fill-muted: var(--color-floating-fill-muted);
+  --color-text-default: var(--color-floating-text-default);
+  --color-text-muted: var(--color-floating-text-muted);
+  --color-link-default: var(--color-floating-link-default);
+  --color-link-hover: var(--color-floating-link-hover);
+  --color-link-active: var(--color-floating-link-active);
+  --color-link-visited: var(--color-floating-link-visited);
+  --color-border-default: var(--color-floating-border-default);
+  --color-focus-default: var(--color-floating-focus-default);
+}
+
+/* Theme and context boundaries paint their own local background and text. */
+:where(:root, [data-theme], [data-color-context]) {
+  background-color: var(--color-fill-default);
+  color: var(--color-text-default);
+}
