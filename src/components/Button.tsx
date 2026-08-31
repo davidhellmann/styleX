@@ -1,8 +1,7 @@
 import * as stylex from "@stylexjs/stylex";
 import { CheckIcon, ExclamationCircleIcon } from "@heroicons/react/20/solid";
 import type { ButtonHTMLAttributes, ReactNode } from "react";
-import { animations, colors, fonts, motion, radii, space, weights } from "../styles/tokens.stylex";
-import { tvVariants } from "../styles/tvVariants";
+import { colors, fonts, motion, radii, space, weights } from "../styles/tokens.stylex";
 
 export type ButtonVariant = "filled" | "outlined" | "ghost";
 export type ButtonSize = "default" | "small";
@@ -70,7 +69,13 @@ export function Button({
       disabled={isDisabled}
       type={type}
       {...stylex.props(
-        ...buttonVariants({ marginTop, previewState, size, state, variant }),
+        styles.root,
+        variantStyles[variant],
+        sizeStyles[size],
+        stateStyles[state],
+        previewState == null ? null : previewStateStyles[previewState],
+        marginTop == null ? null : marginTopStyles[marginTop],
+        previewState === "hover" ? hoverPreviewStyles[variant] : null,
         xstyle,
       )}
     >
@@ -224,7 +229,10 @@ const styles = stylex.create({
     width: "1.125rem",
   },
   spinner: {
-    animation: animations.spin,
+    animationDuration: "800ms",
+    animationIterationCount: "infinite",
+    animationName: "foundation-spin",
+    animationTimingFunction: "linear",
     borderColor: colors.current,
     borderInlineEndColor: colors.transparent,
     borderRadius: "50%",
@@ -235,45 +243,40 @@ const styles = stylex.create({
   },
 });
 
-const buttonVariants = tvVariants({
-  base: styles.root,
-  variants: {
-    variant: {
-      filled: styles.filled,
-      outlined: styles.outlined,
-      ghost: styles.ghost,
-    },
-    size: {
-      default: styles.defaultSize,
-      small: styles.smallSize,
-    },
-    state: {
-      default: null,
-      loading: styles.loading,
-      error: styles.error,
-      success: styles.success,
-    },
-    previewState: {
-      hover: null,
-      focus: styles.previewFocus,
-      active: styles.previewActive,
-    },
-    marginTop: {
-      xs: styles.marginTopXs,
-      sm: styles.marginTopSm,
-      md: styles.marginTopMd,
-      lg: styles.marginTopLg,
-      xl: styles.marginTopXl,
-    },
-  },
-  defaultVariants: {
-    variant: "filled",
-    size: "default",
-    state: "default",
-  },
-  compoundVariants: [
-    { variant: "filled", previewState: "hover", style: styles.previewFilledHover },
-    { variant: "outlined", previewState: "hover", style: styles.previewLightHover },
-    { variant: "ghost", previewState: "hover", style: styles.previewLightHover },
-  ],
-});
+const variantStyles = {
+  filled: styles.filled,
+  ghost: styles.ghost,
+  outlined: styles.outlined,
+} satisfies Record<ButtonVariant, stylex.StyleXStyles>;
+
+const sizeStyles = {
+  default: styles.defaultSize,
+  small: styles.smallSize,
+} satisfies Record<ButtonSize, stylex.StyleXStyles>;
+
+const stateStyles = {
+  default: null,
+  error: styles.error,
+  loading: styles.loading,
+  success: styles.success,
+} satisfies Record<ButtonState, stylex.StyleXStyles>;
+
+const previewStateStyles = {
+  active: styles.previewActive,
+  focus: styles.previewFocus,
+  hover: null,
+} satisfies Record<ButtonPreviewState, stylex.StyleXStyles>;
+
+const marginTopStyles = {
+  lg: styles.marginTopLg,
+  md: styles.marginTopMd,
+  sm: styles.marginTopSm,
+  xl: styles.marginTopXl,
+  xs: styles.marginTopXs,
+} satisfies Record<ButtonMarginSize, stylex.StyleXStyles>;
+
+const hoverPreviewStyles = {
+  filled: styles.previewFilledHover,
+  ghost: styles.previewLightHover,
+  outlined: styles.previewLightHover,
+} satisfies Record<ButtonVariant, stylex.StyleXStyles>;

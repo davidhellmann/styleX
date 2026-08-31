@@ -1,7 +1,6 @@
 import * as stylex from "@stylexjs/stylex";
 import type { HTMLAttributes, ReactNode } from "react";
 import { space } from "../styles/tokens.stylex";
-import { tvVariants } from "../styles/tvVariants";
 
 type StackGap = "xs" | "sm" | "md" | "lg" | "xl";
 type StackDirection = "column" | "row";
@@ -25,7 +24,7 @@ export function Stack({
   return (
     <div
       {...rest}
-      {...stylex.props(...stackVariants({ direction, gap, wrap }), xstyle)}
+      {...stylex.props(styles.root, directionStyles[direction], gapStyles[gap], wrap && styles.wrap, xstyle)}
     >
       {children}
     </div>
@@ -54,28 +53,15 @@ const styles = stylex.create({
   gapXl: { gap: space.xl },
 });
 
-const stackVariants = tvVariants({
-  base: styles.root,
-  variants: {
-    direction: {
-      column: styles.column,
-      row: styles.row,
-    },
-    gap: {
-      xs: styles.gapXs,
-      sm: styles.gapSm,
-      md: styles.gapMd,
-      lg: styles.gapLg,
-      xl: styles.gapXl,
-    },
-    wrap: {
-      true: styles.wrap,
-      false: null,
-    },
-  },
-  defaultVariants: {
-    direction: "column",
-    gap: "md",
-    wrap: false,
-  },
-});
+const directionStyles = {
+  column: styles.column,
+  row: styles.row,
+} satisfies Record<StackDirection, stylex.StyleXStyles>;
+
+const gapStyles = {
+  lg: styles.gapLg,
+  md: styles.gapMd,
+  sm: styles.gapSm,
+  xl: styles.gapXl,
+  xs: styles.gapXs,
+} satisfies Record<StackGap, stylex.StyleXStyles>;

@@ -1,19 +1,19 @@
 # Foundation/X
 
-A small, scalable design-system foundation built from CSS custom properties and a typed StyleX bridge.
+A small, scalable design-system foundation built from CSS custom properties and a key-typed StyleX bridge.
 
 ## The contract
 
-Three independent attributes describe a context:
+Two independent attributes currently describe a context:
 
 - `data-theme="paper|ocean"` selects visual identity.
-- `data-color-scheme="system|light|dark"` selects the light/dark preference. `system` uses the operating-system preference.
 - `data-color-context="canvas|surface|floating"` selects the local color context.
 
 They can be placed at any depth. A theme boundary starts at `canvas` unless that same element declares another color context.
+The foundation is light-only for now, so `data-color-scheme` is deliberately not part of the runtime or typed attribute contract yet.
 
 ```html
-<html data-theme="paper" data-color-scheme="system">
+<html data-theme="paper">
   <section data-theme="ocean" data-color-context="canvas">
     <article data-color-context="surface">
       <aside data-theme="paper" data-color-context="floating">
@@ -90,11 +90,11 @@ The global order is explicit:
   utilities;
 ```
 
-- [`tokens.css`](./tokens.css) contains portable primitives for colors, fonts, type, spacing, shadows, transitions, breakpoints, aspects and animations.
+- [`tokens.css`](./src/styles/foundation/tokens.css) contains portable primitives for colors, fonts, type, spacing, shadows, transitions, breakpoints, aspects and animations.
 - [`reset.css`](./src/styles/foundation/reset.css) is the small framework-independent reset.
-- [`themes.css`](./src/styles/foundation/themes.css) owns `light-dark()` theme slots and contextual mapping.
+- [`themes.css`](./src/styles/foundation/themes.css) owns theme slots and contextual mapping.
 - [`base.css`](./src/styles/foundation/base.css) applies body, link, selection, focus and reduced-motion defaults.
-- [`tokens.stylex.ts`](./src/styles/tokens.stylex.ts) exposes typed StyleX variables without duplicating theme values.
+- [`tokens.stylex.ts`](./src/styles/tokens.stylex.ts) exposes typed keys while preserving the original CSS custom-property references.
 
 StyleX emits its atomic rules into the `priority*` layers, after the foundation base styles.
 
@@ -111,7 +111,7 @@ Breakpoint values are exported as CSS variables for documentation and non-query 
 - `Button`: filled, outlined and ghost; default/small; leading/trailing Heroicons; loading/error/success; typed margin-only `xstyle`.
 - `Heading`: display, page, section and subsection presets with an independent semantic element.
 - `Stack`: typed row/column flow using the shared spacing scale.
-- `themeAttributes`: framework-independent typed attributes for theme, color scheme and color context.
+- `themeAttributes`: framework-independent typed attributes for theme and color context.
 
 ```tsx
 const overrides = stylex.create({
@@ -137,5 +137,6 @@ Verify with:
 
 ```sh
 pnpm check
+pnpm test
 pnpm build
 ```

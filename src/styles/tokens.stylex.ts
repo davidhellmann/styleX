@@ -1,7 +1,13 @@
 import * as stylex from "@stylexjs/stylex";
 
-/** Primitive values are useful for rare one-off recipes. Components should prefer `colors`. */
-export const palette = stylex.defineVars({
+/**
+ * Typed keys for custom properties owned by the CSS Foundation.
+ * `defineConsts()` keeps the original custom-property references in compiled
+ * declarations instead of creating a second, generated variable namespace.
+ */
+
+/** Primitive values are useful for rare one-off recipes. Callers should prefer `colors`. */
+export const palette = stylex.defineConsts({
   neutral000: "var(--color-neutral-000)",
   neutral050: "var(--color-neutral-050)",
   neutral100: "var(--color-neutral-100)",
@@ -22,10 +28,8 @@ export const palette = stylex.defineVars({
 /**
  * Contextual runtime colors.
  *
- * Keep these as external CSS variable references via `stylex.defineConsts()`.
- * `defineConsts()` preserves the custom-property names when StyleX compiles them,
- * so they resolve on the styled element and follow nested themes and contexts.
- * `defineVars()` would instead declare inheritable aliases on `:root`.
+ * These resolve on the styled element, so nested Themes and Color contexts
+ * continue to follow the nearest inherited custom-property values.
  */
 export const colors = stylex.defineConsts({
   fillDefault: "var(--color-fill-default)",
@@ -45,7 +49,7 @@ export const colors = stylex.defineConsts({
   current: "var(--color-current)",
 });
 
-export const fonts = stylex.defineVars({
+export const fonts = stylex.defineConsts({
   body: "var(--font-family-body)",
   display: "var(--font-family-display)",
   ui: "var(--font-family-ui)",
@@ -53,21 +57,21 @@ export const fonts = stylex.defineVars({
   accent: "var(--font-family-accent)",
 });
 
-export const weights = stylex.defineVars({
+export const weights = stylex.defineConsts({
   regular: "var(--font-weight-regular)",
   medium: "var(--font-weight-medium)",
   semibold: "var(--font-weight-semibold)",
   bold: "var(--font-weight-bold)",
 });
 
-export const leading = stylex.defineVars({
+export const leading = stylex.defineConsts({
   tight: "var(--line-height-tight)",
   heading: "var(--line-height-heading)",
   body: "var(--line-height-body)",
   ui: "var(--line-height-ui)",
 });
 
-export const text = stylex.defineVars({
+export const text = stylex.defineConsts({
   xs: "var(--font-size-xs)",
   sm: "var(--font-size-sm)",
   md: "var(--font-size-md)",
@@ -77,7 +81,7 @@ export const text = stylex.defineVars({
   xxxl: "var(--font-size-3xl)",
 });
 
-export const space = stylex.defineVars({
+export const space = stylex.defineConsts({
   xxxs: "var(--space-3xs)",
   xxs: "var(--space-2xs)",
   xs: "var(--space-xs)",
@@ -93,7 +97,7 @@ export const space = stylex.defineVars({
   safeBottom: "var(--space-safe-bottom)",
 });
 
-export const motion = stylex.defineVars({
+export const motion = stylex.defineConsts({
   instant: "var(--duration-instant)",
   fast: "var(--duration-fast)",
   default: "var(--duration-default)",
@@ -103,18 +107,18 @@ export const motion = stylex.defineVars({
   exit: "var(--easing-exit)",
 });
 
-export const transitions = stylex.defineVars({
+export const transitions = stylex.defineConsts({
   interactive: "var(--transition-interactive)",
 });
 
-export const radii = stylex.defineVars({
+export const radii = stylex.defineConsts({
   sm: "var(--radius-sm)",
   md: "var(--radius-md)",
   lg: "var(--radius-lg)",
   round: "var(--radius-round)",
 });
 
-export const shadows = stylex.defineVars({
+export const shadows = stylex.defineConsts({
   sm: "var(--shadow-sm)",
   md: "var(--shadow-md)",
   lg: "var(--shadow-lg)",
@@ -123,16 +127,11 @@ export const shadows = stylex.defineVars({
   sunkenDefault: "var(--shadow-sunken-default)",
 });
 
-export const aspects = stylex.defineVars({
+export const aspects = stylex.defineConsts({
   square: "var(--aspect-square)",
   portrait: "var(--aspect-portrait)",
   landscape: "var(--aspect-landscape)",
   wide: "var(--aspect-wide)",
-});
-
-export const animations = stylex.defineVars({
-  spin: "var(--animation-spin)",
-  enter: "var(--animation-enter)",
 });
 
 /** CSS variables cannot be media-query conditions, so StyleX conditions mirror the CSS token values. */

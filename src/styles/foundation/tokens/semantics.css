@@ -39,26 +39,12 @@
   --shadow-overlay-default: var(--shadow-lg);
   --shadow-sunken-default: var(--shadow-inset-sm);
 
-  /* Interaction and animation roles */
+  /* Interaction roles */
   --transition-interactive: var(--duration-fast) var(--easing-standard);
-  --animation-spin: foundation-spin 800ms linear infinite;
-  --animation-enter: foundation-enter var(--duration-slow) var(--easing-enter) both;
 }
 
 @keyframes foundation-spin {
   to {
     transform: rotate(1turn);
-  }
-}
-
-@keyframes foundation-enter {
-  from {
-    opacity: 0;
-    transform: translateY(0.5rem);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
   }
 }
