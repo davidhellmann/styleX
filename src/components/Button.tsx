@@ -2,27 +2,13 @@ import * as stylex from "@stylexjs/stylex";
 import { CheckIcon, ExclamationCircleIcon } from "@heroicons/react/20/solid";
 import type { ButtonHTMLAttributes, ReactNode } from "react";
 import { colors, fonts, motion, radii, space, weights } from "../styles/tokens.stylex";
+import type { MarginStyleProperties } from "../styles/xstyle.types";
 
 export type ButtonVariant = "filled" | "outlined" | "ghost";
 export type ButtonSize = "default" | "small";
 export type ButtonState = "default" | "loading" | "error" | "success";
 export type ButtonPreviewState = "hover" | "focus" | "active";
 export type ButtonMarginSize = "xs" | "sm" | "md" | "lg" | "xl";
-
-type ButtonMarginStyles = Pick<
-  stylex.CSSProperties,
-  | "margin"
-  | "marginBlock"
-  | "marginBlockEnd"
-  | "marginBlockStart"
-  | "marginBottom"
-  | "marginInline"
-  | "marginInlineEnd"
-  | "marginInlineStart"
-  | "marginLeft"
-  | "marginRight"
-  | "marginTop"
->;
 
 export type ButtonProps = Omit<ButtonHTMLAttributes<HTMLButtonElement>, "className" | "style"> & {
   children: ReactNode;
@@ -33,7 +19,7 @@ export type ButtonProps = Omit<ButtonHTMLAttributes<HTMLButtonElement>, "classNa
   state?: ButtonState;
   trailingIcon?: ReactNode;
   variant?: ButtonVariant;
-  xstyle?: stylex.StyleXStyles<ButtonMarginStyles>;
+  xstyle?: stylex.StyleXStyles<MarginStyleProperties>;
 };
 
 export function Button({
