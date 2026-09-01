@@ -1,6 +1,7 @@
 import * as stylex from "@stylexjs/stylex";
 import type { HTMLAttributes, ReactNode } from "react";
 import { colors, fonts, leading, text, weights } from "../styles/tokens.stylex";
+import { tvVariants } from "../styles/tvVariants";
 
 export type HeadingPreset = "display" | "page" | "section" | "subsection";
 type HeadingTag = "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "p";
@@ -33,17 +34,7 @@ export function Heading({
   return (
     <Tag
       {...rest}
-      {...stylex.props(
-        styles.root,
-        preset === "display" && styles.display,
-        preset === "page" && styles.page,
-        preset === "section" && styles.section,
-        preset === "subsection" && styles.subsection,
-        tone === "default" && styles.defaultTone,
-        tone === "muted" && styles.mutedTone,
-        tone === "accent" && styles.accentTone,
-        xstyle,
-      )}
+      {...stylex.props(...headingVariants({ preset, tone }), xstyle)}
     >
       {children}
     </Tag>
@@ -85,4 +76,25 @@ const styles = stylex.create({
   defaultTone: { color: colors.textDefault },
   mutedTone: { color: colors.textMuted },
   accentTone: { color: colors.linkDefault },
+});
+
+const headingVariants = tvVariants({
+  base: styles.root,
+  variants: {
+    preset: {
+      display: styles.display,
+      page: styles.page,
+      section: styles.section,
+      subsection: styles.subsection,
+    },
+    tone: {
+      default: styles.defaultTone,
+      muted: styles.mutedTone,
+      accent: styles.accentTone,
+    },
+  },
+  defaultVariants: {
+    preset: "section",
+    tone: "default",
+  },
 });

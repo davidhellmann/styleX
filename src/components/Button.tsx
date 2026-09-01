@@ -273,7 +273,10 @@ const buttonVariants = tvVariants({
   },
   compoundVariants: [
     { variant: "filled", previewState: "hover", style: styles.previewFilledHover },
-    { variant: "outlined", previewState: "hover", style: styles.previewLightHover },
-    { variant: "ghost", previewState: "hover", style: styles.previewLightHover },
+    {
+      variant: ["outlined", "ghost"],
+      previewState: "hover",
+      style: styles.previewLightHover,
+    },
   ],
 });

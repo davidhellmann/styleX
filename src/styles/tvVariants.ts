@@ -16,11 +16,17 @@ export type VariantProps<TVariants> = {
   [TVariant in keyof TVariants]?: VariantValue<TVariants[TVariant]>;
 };
 
-type FlatCompound<TVariants extends FlatVariants> = VariantProps<TVariants> & {
+type CompoundProps<TVariants> = {
+  [TVariant in keyof TVariants]?:
+    | VariantValue<TVariants[TVariant]>
+    | ReadonlyArray<VariantValue<TVariants[TVariant]>>;
+};
+
+type FlatCompound<TVariants extends FlatVariants> = CompoundProps<TVariants> & {
   style: Style;
 };
 
-type SlotCompound<TSlots extends Slots, TVariants extends SlotVariants<TSlots>> = VariantProps<TVariants> & {
+type SlotCompound<TSlots extends Slots, TVariants extends SlotVariants<TSlots>> = CompoundProps<TVariants> & {
   style: SlotStyles<TSlots>;
 };
 
@@ -120,7 +126,9 @@ function applyCompounds(
 ) {
   for (const compound of compounds ?? []) {
     const { style, ...conditions } = compound;
-    const matches = Object.entries(conditions).every(([key, value]) => resolved[key] === value);
+    const matches = Object.entries(conditions).every(([key, value]) =>
+      Array.isArray(value) ? value.includes(resolved[key]) : resolved[key] === value,
+    );
     if (matches) apply(style);
   }
 }

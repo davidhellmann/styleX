@@ -6,7 +6,10 @@ export default defineConfig({
   plugins: [
     stylex.vite({
       devMode: "full",
-      useCSSLayers: true,
+      useCSSLayers: {
+        before: ["reset", "tokens", "themes", "base"],
+        after: ["utilities"],
+      },
     }),
     react(),
   ],
