@@ -2,7 +2,7 @@
  * Theme-independent semantic tokens
  *
  * Semantics assign primitive values to stable application roles. They may be
- * consumed by StyleX recipes and components. Theme-dependent color roles stay
+ * consumed by utility recipes and components. Theme-dependent color roles stay
  * in themes/theme-contract.css and the individual theme files.
  */
 :root {

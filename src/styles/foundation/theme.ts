@@ -1,8 +1,7 @@
 export type Theme = "paper" | "ocean";
 export type ColorContext = "canvas" | "surface" | "floating";
 
-// ColorScheme intentionally stays out of the public API until dark theme
-// values exist. The CSS contract is structured so it can be added later.
+// Add ColorScheme after every theme supplies light-dark() values.
 
 export type ThemeOptions = {
   theme?: Theme;
@@ -31,7 +30,7 @@ export type ThemeOptions = {
  * <div
  *   role="menu"
  *   {...themeAttributes({ theme: "ocean", colorContext: "floating" })}
- *   {...stylex.props(styles.dropdown)}
+ *   className="rounded-md border border-border bg-background p-md"
  * >
  *   Dropdown content
  * </div>

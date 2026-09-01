@@ -1,130 +1,57 @@
-# Foundation/X
+# Design foundation with Tailwind CSS
 
-A small, scalable design-system foundation built from CSS custom properties and a typed StyleX bridge.
+A small design-system foundation where portable CSS custom properties own the values and Tailwind CSS provides the utility API. [ADR 0001](./docs/adr/0001-css-foundation-drives-tailwind.md) records that ownership boundary.
 
-## The contract
+## Context contract
 
-Three independent attributes describe a context:
+Two independent attributes describe the current visual context:
 
-- `data-theme="paper|ocean"` selects visual identity.
-- `data-color-scheme="system|light|dark"` selects the light/dark preference. `system` uses the operating-system preference.
-- `data-color-context="canvas|surface|floating"` selects the local color context.
+- `data-theme="paper|ocean"` selects a named palette.
+- `data-color-context="canvas|surface|floating"` selects the inheritable color environment.
 
-They can be placed at any depth. A theme boundary starts at `canvas` unless that same element declares another color context.
-
-```html
-<html data-theme="paper" data-color-scheme="system">
-  <section data-theme="ocean" data-color-context="canvas">
-    <article data-color-context="surface">
-      <aside data-theme="paper" data-color-context="floating">
-        Endless nesting: theme and color context stay local.
-      </aside>
-    </article>
-  </section>
-</html>
-```
-
-The same typed attribute helper works in Astro and React without introducing a wrapper element.
-
-```astro
----
-import { themeAttributes } from "../styles/foundation/theme";
----
-
-<section {...themeAttributes({ theme: "ocean", colorContext: "canvas" })}>
-  <article {...themeAttributes({ colorContext: "surface" })}>
-    Static content
-  </article>
-</section>
-```
+They may be nested at any depth. A new theme starts in `canvas` unless the same element explicitly selects another color context.
 
 ```tsx
 <section {...themeAttributes({ theme: "ocean", colorContext: "canvas" })}>
-  <article {...themeAttributes({ colorContext: "surface" })}>
-    <Button variant="outlined">Same component recipe</Button>
+  <article
+    {...themeAttributes({ colorContext: "surface" })}
+    className="border border-border bg-background text-foreground"
+  >
+    <Button variant="outlined">Context-aware component</Button>
   </article>
 </section>
 ```
 
-`floating` supplies dropdowns, popovers, tooltips, and dialogs with their own theme-dependent colors. `raised`, `overlay`, and `sunken` remain visual treatments. A raised card is still a `surface`; it only composes a shadow recipe. An overlay panel normally composes `colorContext="floating"` with an overlay treatment. Its backdrop does not open a color context and uses `--color-backdrop-fill-default` directly.
+The foundation is intentionally light-only. Add color-scheme control after every theme supplies `light-dark()` values for the complete theme contract.
 
-## Color naming
+## CSS and Tailwind layers
 
-Themes own fixed-depth backing slots:
-
-```css
---color-canvas-fill-default;
---color-canvas-text-default;
---color-canvas-text-muted;
---color-canvas-link-default;
---color-canvas-link-hover;
---color-canvas-border-default;
-```
-
-The same slots exist for `surface` and `floating`. A `data-color-context` boundary maps them onto the small interface that callers consume:
+The global cascade order is explicit:
 
 ```css
---color-fill-default;
---color-fill-muted;
---color-text-default;
---color-text-muted;
---color-link-default;
---color-link-hover;
---color-link-active;
---color-link-visited;
---color-border-default;
---color-focus-default;
+@layer theme, tokens, themes, base, components, utilities;
 ```
 
-This is why a link does not need to know whether it sits on a dark-blue canvas or a pale card. It always consumes `--color-link-default`; the nearest context supplies the right value.
+- [`primitives.css`](./src/styles/foundation/tokens/primitives.css) owns raw colors, typography, spacing, geometry, motion, and breakpoints.
+- [`semantics.css`](./src/styles/foundation/tokens/semantics.css) assigns stable non-color roles.
+- [`themes.css`](./src/styles/foundation/themes.css) owns Paper/Ocean values and contextual color mapping.
+- [`base.css`](./src/styles/foundation/base.css) applies body, links, focus, selection, and reduced-motion defaults on top of Tailwind Preflight.
+- [`tailwind.css`](./src/styles/tailwind.css) resets Tailwind's default theme and maps the foundation into `@theme inline`.
 
-`default` is used consistently for the primary semantic value. `base` and `rest` are not mixed into the semantic layer.
+Contextual utilities use concise names such as `bg-background`, `text-foreground`, `text-foreground-muted`, `text-link`, `border-border`, and `outline-focus`. Raw palette access is deliberately explicit, for example `bg-palette-ocean-500`.
 
-## CSS layers
+## Breakpoints
 
-The global order is explicit:
-
-```css
-@layer reset, tokens, themes, base,
-  priority1, priority2, priority3, priority4, priority5,
-  utilities;
-```
-
-- [`tokens.css`](./tokens.css) contains portable primitives for colors, fonts, type, spacing, shadows, transitions, breakpoints, aspects and animations.
-- [`reset.css`](./src/styles/foundation/reset.css) is the small framework-independent reset.
-- [`themes.css`](./src/styles/foundation/themes.css) owns `light-dark()` theme slots and contextual mapping.
-- [`base.css`](./src/styles/foundation/base.css) applies body, link, selection, focus and reduced-motion defaults.
-- [`tokens.stylex.ts`](./src/styles/tokens.stylex.ts) exposes typed StyleX variables without duplicating theme values.
-
-StyleX emits its atomic rules into the `priority*` layers, after the foundation base styles.
-
-## Adding a theme
-
-Add one `[data-theme="name"]` block and provide the `canvas`, `surface`, and `floating` slots. Callers remain unchanged. Then add the value to `Theme` in `theme.ts` so it becomes available through TypeScript.
-
-## Breakpoint caveat
-
-Breakpoint values are exported as CSS variables for documentation and non-query calculations. CSS custom properties cannot be used in `@media` conditions, so `breakpoints` in the StyleX bridge intentionally mirrors those literal values.
+The responsive variants are `sm` 30rem, `md` 48rem, `lg` 64rem, `xl` 80rem, and `2xl` 96rem. CSS custom properties cannot resolve inside media-query conditions, so the Tailwind adapter mirrors those literal values and carries a synchronization comment.
 
 ## Components
 
-- `Button`: filled, outlined and ghost; default/small; leading/trailing Heroicons; loading/error/success; typed margin-only `xstyle`.
-- `Heading`: display, page, section and subsection presets with an independent semantic element.
-- `Stack`: typed row/column flow using the shared spacing scale.
-- `themeAttributes`: framework-independent typed attributes for theme, color scheme and color context.
+- `Button`: filled, outlined, and ghost variants; two sizes; loading/error/success states; icons; token margins.
+- `Heading`: display, page, section, and subsection presets independent from the rendered semantic tag.
+- `Stack`: typed row/column flow using the foundation spacing scale.
+- `themeAttributes`: framework-independent typed theme and color-context attributes.
 
-```tsx
-const overrides = stylex.create({
-  allowed: { marginInlineStart: space.md },
-  rejected: { backgroundColor: colors.linkDefault },
-});
-
-<Button marginTop="md">Token spacing</Button>;
-<Button xstyle={overrides.allowed}>Custom margin</Button>;
-
-// TypeScript error: Button.xstyle does not accept backgroundColor.
-<Button xstyle={overrides.rejected}>Not allowed</Button>;
-```
+The base components accept native `className` and `style`. Tailwind Variants resolves conflicting utility classes so call-site classes can override recipe defaults.
 
 ## Run
 

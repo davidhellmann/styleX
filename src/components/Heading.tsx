@@ -1,17 +1,14 @@
-import * as stylex from "@stylexjs/stylex";
 import type { HTMLAttributes, ReactNode } from "react";
-import { colors, fonts, leading, text, weights } from "../styles/tokens.stylex";
-import { tvVariants } from "../styles/tvVariants";
+import { tv } from "tailwind-variants";
 
 export type HeadingPreset = "display" | "page" | "section" | "subsection";
 type HeadingTag = "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "p";
 
-type HeadingProps = Omit<HTMLAttributes<HTMLElement>, "className" | "style"> & {
+export type HeadingProps = HTMLAttributes<HTMLElement> & {
   as?: HeadingTag;
   children: ReactNode;
   preset?: HeadingPreset;
   tone?: "default" | "muted" | "accent";
-  xstyle?: stylex.StyleXStyles;
 };
 
 const defaultTags: Record<HeadingPreset, HeadingTag> = {
@@ -24,73 +21,34 @@ const defaultTags: Record<HeadingPreset, HeadingTag> = {
 export function Heading({
   as,
   children,
+  className,
   preset = "section",
+  style,
   tone = "default",
-  xstyle,
   ...rest
 }: HeadingProps) {
   const Tag = as ?? defaultTags[preset];
 
   return (
-    <Tag
-      {...rest}
-      {...stylex.props(...headingVariants({ preset, tone }), xstyle)}
-    >
+    <Tag className={headingVariants({ className, preset, tone })} style={style} {...rest}>
       {children}
     </Tag>
   );
 }
 
-const styles = stylex.create({
-  root: {
-    fontFamily: fonts.display,
-    fontStyle: "normal",
-    margin: 0,
-    minWidth: 0,
-    overflowWrap: "anywhere",
-  },
-  display: {
-    fontSize: "clamp(3rem, 9vw, 7rem)",
-    fontWeight: weights.regular,
-    letterSpacing: "-0.045em",
-    lineHeight: leading.tight,
-  },
-  page: {
-    fontSize: text.xxxl,
-    fontWeight: weights.regular,
-    letterSpacing: "-0.035em",
-    lineHeight: leading.tight,
-  },
-  section: {
-    fontSize: text.xl,
-    fontWeight: weights.bold,
-    letterSpacing: "-0.025em",
-    lineHeight: leading.tight,
-  },
-  subsection: {
-    fontSize: text.lg,
-    fontWeight: weights.bold,
-    letterSpacing: "-0.015em",
-    lineHeight: leading.heading,
-  },
-  defaultTone: { color: colors.textDefault },
-  mutedTone: { color: colors.textMuted },
-  accentTone: { color: colors.linkDefault },
-});
-
-const headingVariants = tvVariants({
-  base: styles.root,
+const headingVariants = tv({
+  base: "m-0 min-w-0 font-display not-italic [overflow-wrap:anywhere]",
   variants: {
     preset: {
-      display: styles.display,
-      page: styles.page,
-      section: styles.section,
-      subsection: styles.subsection,
+      display: "text-[length:clamp(3rem,9vw,7rem)] font-normal leading-tight tracking-[-0.045em]",
+      page: "text-3xl font-normal leading-tight tracking-tight",
+      section: "text-xl font-bold leading-tight tracking-[-0.025em]",
+      subsection: "text-lg font-bold leading-heading tracking-[-0.015em]",
     },
     tone: {
-      default: styles.defaultTone,
-      muted: styles.mutedTone,
-      accent: styles.accentTone,
+      default: "text-foreground",
+      muted: "text-foreground-muted",
+      accent: "text-link",
     },
   },
   defaultVariants: {

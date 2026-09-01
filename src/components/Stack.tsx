@@ -1,76 +1,49 @@
-import * as stylex from "@stylexjs/stylex";
 import type { HTMLAttributes, ReactNode } from "react";
-import { space } from "../styles/tokens.stylex";
-import { tvVariants } from "../styles/tvVariants";
+import { tv } from "tailwind-variants";
 
-type StackGap = "xs" | "sm" | "md" | "lg" | "xl";
-type StackDirection = "column" | "row";
+export type StackGap = "xs" | "sm" | "md" | "lg" | "xl";
+export type StackDirection = "column" | "row";
 
-type StackProps = Omit<HTMLAttributes<HTMLDivElement>, "className" | "style"> & {
+export type StackProps = HTMLAttributes<HTMLDivElement> & {
   children: ReactNode;
   direction?: StackDirection;
   gap?: StackGap;
   wrap?: boolean;
-  xstyle?: stylex.StyleXStyles;
 };
 
 export function Stack({
   children,
+  className,
   direction = "column",
   gap = "md",
+  style,
   wrap = false,
-  xstyle,
   ...rest
 }: StackProps) {
   return (
-    <div
-      {...rest}
-      {...stylex.props(...stackVariants({ direction, gap, wrap }), xstyle)}
-    >
+    <div className={stackVariants({ className, direction, gap, wrap })} style={style} {...rest}>
       {children}
     </div>
   );
 }
 
-const styles = stylex.create({
-  root: {
-    display: "flex",
-    minWidth: 0,
-  },
-  column: {
-    flexDirection: "column",
-  },
-  row: {
-    alignItems: "center",
-    flexDirection: "row",
-  },
-  wrap: {
-    flexWrap: "wrap",
-  },
-  gapXs: { gap: space.xs },
-  gapSm: { gap: space.sm },
-  gapMd: { gap: space.md },
-  gapLg: { gap: space.lg },
-  gapXl: { gap: space.xl },
-});
-
-const stackVariants = tvVariants({
-  base: styles.root,
+const stackVariants = tv({
+  base: "flex min-w-0",
   variants: {
     direction: {
-      column: styles.column,
-      row: styles.row,
+      column: "flex-col",
+      row: "flex-row items-center",
     },
     gap: {
-      xs: styles.gapXs,
-      sm: styles.gapSm,
-      md: styles.gapMd,
-      lg: styles.gapLg,
-      xl: styles.gapXl,
+      xs: "gap-xs",
+      sm: "gap-sm",
+      md: "gap-md",
+      lg: "gap-lg",
+      xl: "gap-xl",
     },
     wrap: {
-      true: styles.wrap,
-      false: null,
+      true: "flex-wrap",
+      false: "flex-nowrap",
     },
   },
   defaultVariants: {

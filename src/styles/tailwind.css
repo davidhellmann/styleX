@@ -1,0 +1,132 @@
+/*
+ * Tailwind is an adapter over the foundation CSS contract. Values continue to
+ * live in foundation/tokens and foundation/themes; `inline` keeps contextual
+ * aliases resolving where a utility is used, including inside nested themes.
+ */
+@theme inline {
+  --*: initial;
+
+  /* Context-aware component colors */
+  --color-background: var(--color-fill-default);
+  --color-background-muted: var(--color-fill-muted);
+  --color-foreground: var(--color-text-default);
+  --color-foreground-muted: var(--color-text-muted);
+  --color-link: var(--color-link-default);
+  --color-link-hover: var(--color-link-hover);
+  --color-link-active: var(--color-link-active);
+  --color-link-visited: var(--color-link-visited);
+  --color-border: var(--color-border-default);
+  --color-focus: var(--color-focus-default);
+  --color-danger: var(--color-danger-default);
+  --color-success: var(--color-success-default);
+  --color-backdrop: var(--color-backdrop-fill-default);
+  --color-transparent: transparent;
+  --color-current: currentColor;
+
+  /* Primitive colors are deliberately explicit escape hatches. */
+  --color-palette-neutral-000: var(--color-neutral-000);
+  --color-palette-neutral-050: var(--color-neutral-050);
+  --color-palette-neutral-100: var(--color-neutral-100);
+  --color-palette-neutral-200: var(--color-neutral-200);
+  --color-palette-neutral-300: var(--color-neutral-300);
+  --color-palette-neutral-500: var(--color-neutral-500);
+  --color-palette-neutral-700: var(--color-neutral-700);
+  --color-palette-neutral-800: var(--color-neutral-800);
+  --color-palette-neutral-900: var(--color-neutral-900);
+  --color-palette-neutral-950: var(--color-neutral-950);
+  --color-palette-ocean-050: var(--color-ocean-050);
+  --color-palette-ocean-100: var(--color-ocean-100);
+  --color-palette-ocean-200: var(--color-ocean-200);
+  --color-palette-ocean-400: var(--color-ocean-400);
+  --color-palette-ocean-500: var(--color-ocean-500);
+  --color-palette-ocean-600: var(--color-ocean-600);
+  --color-palette-ocean-700: var(--color-ocean-700);
+  --color-palette-ocean-800: var(--color-ocean-800);
+  --color-palette-ocean-900: var(--color-ocean-900);
+  --color-palette-ocean-950: var(--color-ocean-950);
+  --color-palette-orange-300: var(--color-orange-300);
+  --color-palette-orange-500: var(--color-orange-500);
+  --color-palette-orange-600: var(--color-orange-600);
+  --color-palette-yellow-300: var(--color-yellow-300);
+  --color-palette-red-400: var(--color-red-400);
+  --color-palette-red-600: var(--color-red-600);
+  --color-palette-green-400: var(--color-green-400);
+  --color-palette-green-600: var(--color-green-600);
+
+  /* Typography */
+  --font-body: var(--font-family-body);
+  --font-display: var(--font-family-display);
+  --font-ui: var(--font-family-ui);
+  --font-code: var(--font-family-code);
+  --font-accent: var(--font-family-accent);
+  --font-weight-normal: var(--font-weight-regular);
+  --font-weight-medium: var(--font-weight-medium);
+  --font-weight-semibold: var(--font-weight-semibold);
+  --font-weight-bold: var(--font-weight-bold);
+  --text-xs: var(--font-size-xs);
+  --text-sm: var(--font-size-sm);
+  --text-base: var(--font-size-md);
+  --text-lg: var(--font-size-lg);
+  --text-xl: var(--font-size-xl);
+  --text-2xl: var(--font-size-2xl);
+  --text-3xl: var(--font-size-3xl);
+  --leading-tight: var(--line-height-tight);
+  --leading-heading: var(--line-height-heading);
+  --leading-body: var(--line-height-body);
+  --leading-ui: var(--line-height-ui);
+  --tracking-tight: var(--letter-spacing-tight);
+  --tracking-ui: var(--letter-spacing-ui);
+
+  /* Spacing and layout */
+  --spacing: var(--space-2xs);
+  --spacing-3xs: var(--space-3xs);
+  --spacing-2xs: var(--space-2xs);
+  --spacing-xs: var(--space-xs);
+  --spacing-sm: var(--space-sm);
+  --spacing-md: var(--space-md);
+  --spacing-lg: var(--space-lg);
+  --spacing-xl: var(--space-xl);
+  --spacing-2xl: var(--space-2xl);
+  --spacing-3xl: var(--space-3xl);
+  --spacing-4xl: var(--space-4xl);
+  --spacing-gutter: var(--space-gutter);
+  --spacing-section: var(--space-section);
+  --spacing-safe-bottom: var(--space-safe-bottom);
+  --container-default: var(--content-width-default);
+  --container-reading: var(--content-width-reading);
+
+  /* CSS variables cannot be used in media-query conditions. Keep these
+     literals synchronized with foundation/tokens/primitives.css. */
+  --breakpoint-sm: 30rem;
+  --breakpoint-md: 48rem;
+  --breakpoint-lg: 64rem;
+  --breakpoint-xl: 80rem;
+  --breakpoint-2xl: 96rem;
+
+  /* Geometry, elevation, and motion */
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-round: var(--radius-round);
+  --shadow-sm: var(--shadow-sm);
+  --shadow-md: var(--shadow-md);
+  --shadow-lg: var(--shadow-lg);
+  --shadow-raised: var(--shadow-raised-default);
+  --shadow-overlay: var(--shadow-overlay-default);
+  --shadow-sunken: var(--shadow-sunken-default);
+  --inset-shadow-sm: var(--shadow-inset-sm);
+  --ease-standard: var(--easing-standard);
+  --ease-enter: var(--easing-enter);
+  --ease-exit: var(--easing-exit);
+  --animate-spin: var(--animation-spin);
+  --animate-enter: var(--animation-enter);
+  --aspect-square: var(--aspect-square);
+  --aspect-portrait: var(--aspect-portrait);
+  --aspect-landscape: var(--aspect-landscape);
+  --aspect-wide: var(--aspect-wide);
+  --default-transition-duration: var(--duration-default);
+  --default-transition-timing-function: var(--easing-standard);
+}
+
+@custom-variant pointer-fine (@media (hover: hover) and (pointer: fine));
+@custom-variant pointer-coarse (@media (pointer: coarse));

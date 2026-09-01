@@ -1,8 +1,6 @@
-import * as stylex from "@stylexjs/stylex";
 import { CheckIcon, ExclamationCircleIcon } from "@heroicons/react/20/solid";
 import type { ButtonHTMLAttributes, ReactNode } from "react";
-import { animations, colors, fonts, motion, radii, space, weights } from "../styles/tokens.stylex";
-import { tvVariants } from "../styles/tvVariants";
+import { tv } from "tailwind-variants";
 
 export type ButtonVariant = "filled" | "outlined" | "ghost";
 export type ButtonSize = "default" | "small";
@@ -10,22 +8,7 @@ export type ButtonState = "default" | "loading" | "error" | "success";
 export type ButtonPreviewState = "hover" | "focus" | "active";
 export type ButtonMarginSize = "xs" | "sm" | "md" | "lg" | "xl";
 
-type ButtonMarginStyles = Pick<
-  stylex.CSSProperties,
-  | "margin"
-  | "marginBlock"
-  | "marginBlockEnd"
-  | "marginBlockStart"
-  | "marginBottom"
-  | "marginInline"
-  | "marginInlineEnd"
-  | "marginInlineStart"
-  | "marginLeft"
-  | "marginRight"
-  | "marginTop"
->;
-
-export type ButtonProps = Omit<ButtonHTMLAttributes<HTMLButtonElement>, "className" | "style"> & {
+export type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   children: ReactNode;
   leadingIcon?: ReactNode;
   marginTop?: ButtonMarginSize;
@@ -34,21 +17,21 @@ export type ButtonProps = Omit<ButtonHTMLAttributes<HTMLButtonElement>, "classNa
   state?: ButtonState;
   trailingIcon?: ReactNode;
   variant?: ButtonVariant;
-  xstyle?: stylex.StyleXStyles<ButtonMarginStyles>;
 };
 
 export function Button({
   children,
+  className,
   disabled = false,
   leadingIcon,
   marginTop,
   previewState,
   size = "default",
   state = "default",
+  style,
   trailingIcon,
   type = "button",
   variant = "filled",
-  xstyle,
   ...rest
 }: ButtonProps) {
   const isLoading = state === "loading";
@@ -66,204 +49,65 @@ export function Button({
       aria-busy={isLoading || undefined}
       aria-disabled={isDisabled || undefined}
       aria-invalid={state === "error" || undefined}
+      className={buttonVariants({ className, marginTop, previewState, size, state, variant })}
       data-state={state}
       disabled={isDisabled}
+      style={style}
       type={type}
-      {...stylex.props(
-        ...buttonVariants({ marginTop, previewState, size, state, variant }),
-        xstyle,
-      )}
     >
       {isLoading ? (
-        <span aria-hidden="true" {...stylex.props(styles.spinner)} />
+        <span aria-hidden="true" className={spinnerClassName} />
       ) : (
-        (stateIcon ?? leadingIcon) && <span {...stylex.props(styles.icon)}>{stateIcon ?? leadingIcon}</span>
+        (stateIcon ?? leadingIcon) && <span className={iconClassName}>{stateIcon ?? leadingIcon}</span>
       )}
-      <span {...stylex.props(styles.label)}>{children}</span>
-      {!isLoading && trailingIcon && <span {...stylex.props(styles.icon)}>{trailingIcon}</span>}
+      <span className="min-w-0">{children}</span>
+      {!isLoading && trailingIcon && <span className={iconClassName}>{trailingIcon}</span>}
     </button>
   );
 }
 
-const styles = stylex.create({
-  root: {
-    alignItems: "center",
-    borderRadius: radii.sm,
-    borderStyle: "solid",
-    borderWidth: "1px",
-    cursor: {
-      default: "pointer",
-      ":disabled": "not-allowed",
-    },
-    display: "inline-flex",
-    flexShrink: 0,
-    fontFamily: fonts.ui,
-    fontSize: "0.875rem",
-    fontWeight: weights.bold,
-    gap: space.xs,
-    justifyContent: "center",
-    letterSpacing: "0.01em",
-    lineHeight: "1",
-    outlineColor: {
-      default: "transparent",
-      ":focus-visible": colors.focusDefault,
-    },
-    outlineOffset: "3px",
-    outlineStyle: "dashed",
-    outlineWidth: {
-      default: "2px",
-      ":focus-visible": "2px",
-    },
-    opacity: {
-      default: 1,
-      ":disabled": 0.48,
-    },
-    textDecoration: "none",
-    transform: {
-      default: "translateY(0)",
-      ":hover": {
-        default: null,
-        "@media (hover: hover) and (pointer: fine)": "translateY(-1px)",
-      },
-      ":active": {
-        default: "translateY(1px)",
-        "@media (prefers-reduced-motion: reduce)": "none",
-      },
-    },
-    transitionDuration: motion.fast,
-    transitionProperty: "background-color, color, border-color, transform",
-    transitionTimingFunction: motion.standard,
-    whiteSpace: "nowrap",
-  },
-  filled: {
-    backgroundColor: {
-      default: colors.textDefault,
-      ":hover": {
-        default: null,
-        "@media (hover: hover) and (pointer: fine)": colors.textDefault,
-      },
-      ":active": colors.textDefault,
-    },
-    borderColor: colors.textDefault,
-    color: colors.fillDefault,
-  },
-  outlined: {
-    backgroundColor: {
-      default: colors.transparent,
-      ":hover": {
-        default: null,
-        "@media (hover: hover) and (pointer: fine)": colors.fillMuted,
-      },
-    },
-    borderColor: colors.textDefault,
-    color: colors.textDefault,
-  },
-  ghost: {
-    backgroundColor: {
-      default: colors.transparent,
-      ":hover": {
-        default: null,
-        "@media (hover: hover) and (pointer: fine)": colors.fillMuted,
-      },
-    },
-    borderColor: colors.transparent,
-    color: colors.textDefault,
-  },
-  defaultSize: {
-    minHeight: "3rem",
-    paddingBlock: space.sm,
-    paddingInline: space.lg,
-  },
-  smallSize: {
-    minHeight: {
-      default: "2.5rem",
-      "@media (pointer: coarse)": "2.75rem",
-    },
-    paddingBlock: space.xs,
-    paddingInline: space.md,
-  },
-  loading: {
-    cursor: "wait",
-  },
-  error: {
-    borderColor: colors.dangerDefault,
-  },
-  success: {
-    borderColor: colors.successDefault,
-  },
-  previewFilledHover: {
-    transform: {
-      default: "translateY(-1px)",
-      "@media (prefers-reduced-motion: reduce)": "none",
-    },
-  },
-  previewLightHover: { backgroundColor: colors.fillMuted },
-  previewFocus: {
-    outlineColor: colors.focusDefault,
-    outlineWidth: "2px",
-  },
-  previewActive: {
-    transform: {
-      default: "translateY(1px)",
-      "@media (prefers-reduced-motion: reduce)": "none",
-    },
-  },
-  marginTopXs: { marginTop: space.xs },
-  marginTopSm: { marginTop: space.sm },
-  marginTopMd: { marginTop: space.md },
-  marginTopLg: { marginTop: space.lg },
-  marginTopXl: { marginTop: space.xl },
-  label: {
-    minWidth: 0,
-  },
-  icon: {
-    display: "inline-grid",
-    flex: "0 0 auto",
-    height: "1.125rem",
-    placeItems: "center",
-    width: "1.125rem",
-  },
-  spinner: {
-    animation: animations.spin,
-    borderColor: colors.current,
-    borderInlineEndColor: colors.transparent,
-    borderRadius: "50%",
-    borderStyle: "solid",
-    borderWidth: "2px",
-    height: "1rem",
-    width: "1rem",
-  },
-});
+const iconClassName = "inline-grid size-[1.125rem] shrink-0 place-items-center [&>svg]:size-full";
+const spinnerClassName =
+  "size-4 animate-spin rounded-full border-2 border-solid border-current [border-inline-end-color:transparent]";
 
-const buttonVariants = tvVariants({
-  base: styles.root,
+const buttonVariants = tv({
+  base: [
+    "inline-flex shrink-0 translate-y-0 items-center justify-center gap-xs whitespace-nowrap rounded-sm",
+    "border border-solid font-ui text-sm font-bold leading-ui tracking-[0.01em] no-underline",
+    "outline-2 outline-offset-[3px] outline-dashed outline-transparent",
+    "transition-[background-color,color,border-color,transform] duration-(--duration-fast) ease-standard",
+    "pointer-fine:hover:-translate-y-px active:translate-y-px motion-reduce:active:translate-y-0",
+    "focus-visible:outline-focus disabled:cursor-not-allowed disabled:opacity-[0.48]",
+  ],
   variants: {
     variant: {
-      filled: styles.filled,
-      outlined: styles.outlined,
-      ghost: styles.ghost,
+      filled: "border-foreground bg-foreground text-background",
+      outlined:
+        "border-foreground bg-transparent text-foreground pointer-fine:hover:bg-background-muted",
+      ghost:
+        "border-transparent bg-transparent text-foreground pointer-fine:hover:bg-background-muted",
     },
     size: {
-      default: styles.defaultSize,
-      small: styles.smallSize,
+      default: "min-h-12 px-lg py-sm",
+      small: "min-h-10 px-md py-xs pointer-coarse:min-h-11",
     },
     state: {
-      default: null,
-      loading: styles.loading,
-      error: styles.error,
-      success: styles.success,
+      default: "",
+      loading: "cursor-wait",
+      error: "border-danger",
+      success: "border-success",
     },
     previewState: {
-      hover: null,
-      focus: styles.previewFocus,
-      active: styles.previewActive,
+      hover: "",
+      focus: "outline-focus",
+      active: "translate-y-px motion-reduce:translate-y-0",
     },
     marginTop: {
-      xs: styles.marginTopXs,
-      sm: styles.marginTopSm,
-      md: styles.marginTopMd,
-      lg: styles.marginTopLg,
-      xl: styles.marginTopXl,
+      xs: "mt-xs",
+      sm: "mt-sm",
+      md: "mt-md",
+      lg: "mt-lg",
+      xl: "mt-xl",
     },
   },
   defaultVariants: {
@@ -272,11 +116,15 @@ const buttonVariants = tvVariants({
     state: "default",
   },
   compoundVariants: [
-    { variant: "filled", previewState: "hover", style: styles.previewFilledHover },
+    {
+      variant: "filled",
+      previewState: "hover",
+      class: "-translate-y-px motion-reduce:translate-y-0",
+    },
     {
       variant: ["outlined", "ghost"],
       previewState: "hover",
-      style: styles.previewLightHover,
+      class: "bg-background-muted",
     },
   ],
 });
