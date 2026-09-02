@@ -1,0 +1,18 @@
+#!/usr/bin/env sh
+set -eu
+
+# Git passes a null object ID as the previous HEAD for a new worktree.
+# Ignore regular branch and file checkouts.
+case "${1:-}" in
+  ""|*[!0]*) exit 0 ;;
+esac
+
+WORKTREE_ROOT="$(git rev-parse --show-toplevel)"
+SETUP_SCRIPT="$WORKTREE_ROOT/scripts/worktree-setup.sh"
+
+if [ ! -f "$SETUP_SCRIPT" ]; then
+  echo "warning: worktree setup script not found: $SETUP_SCRIPT" >&2
+  exit 0
+fi
+
+exec sh "$SETUP_SCRIPT"
